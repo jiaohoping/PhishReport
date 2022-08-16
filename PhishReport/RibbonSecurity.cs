@@ -227,6 +227,8 @@ namespace PhishReport
 			OlDefaultFolders targetFolder = OlDefaultFolders.olFolderInbox;
 			string strTF = settings["TargetFolder"].ToString();
 			int targetFolderId = Convert.ToInt32(settings["TargetFolder"].ToString());
+			// 这里转发到Outlook默认文件夹，https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.outlook.oldefaultfolders?view=outlook-pia
+			// 可以根据链接中来进行更改，使其转发到不同的文件夹。
 			switch (targetFolderId)
 			{
 				case 1:
@@ -241,7 +243,7 @@ namespace PhishReport
 			MAPIFolder target = new Outlook.Application().ActiveExplorer().Session.GetDefaultFolder(targetFolder);
 			//originalMail.Move(target);
 
-
+			// 判断源邮件是什么类型的
 			if (originalMail is Outlook.MailItem)
 			{
 				((MailItem)originalMail).Close(OlInspectorClose.olDiscard);
