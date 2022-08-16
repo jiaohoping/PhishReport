@@ -210,14 +210,15 @@ namespace PhishReport
 			}
 
 			//create new email
-			string propName = "http://schemas.microsoft.com/mapi/proptag/0x007D001E";
+			// 去掉用户报告邮件中的邮件头内容
+			// string propName = "http://schemas.microsoft.com/mapi/proptag/0x007D001E";
 
-			string header = propAccessor.GetProperty(propName);
+			// string header = propAccessor.GetProperty(propName);
 
 			MailItem fwMail = (MailItem)Globals.ThisAddIn.Application.CreateItem(OlItemType.olMailItem);
 			fwMail.To = settings["FwdAddress"].ToString();
 			fwMail.Subject = string.Format("{0}{1}", settings["SubjectPrefix"].ToString(), subject);
-			fwMail.Body = header;
+			// fwMail.Body = header;
 			fwMail.Attachments.Add(originalMail);
 
 			fwMail.Save();
@@ -232,7 +233,9 @@ namespace PhishReport
 			switch (targetFolderId)
 			{
 				case 1:
-					targetFolder = OlDefaultFolders.olFolderDeletedItems;
+					// 默认不移动报告的邮件
+					targetFolder = OlDefaultFolders.olFolderInbox;
+					// targetFolder = OlDefaultFolders.olFolderDeletedItems;
 					break;
 				default:
 					targetFolder = OlDefaultFolders.olFolderJunk;
